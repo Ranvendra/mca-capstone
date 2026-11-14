@@ -203,7 +203,7 @@ Memory initial data deterministic: `mem[word_addr] = word_addr * 32'h9E3779B1` (
 | **M4** | Verification (testbenches + golden model) | `tb/*`, `golden_model.py`, `Makefile`, waveform screenshots |
 | **M5** | Traces + Analysis (hit rate, AMAT) + Report/PPT | `gen_traces.py`, `analyze.py`, hit/miss report, AMAT, final report |
 
-> Naam bharo: M1 = ______ , M2 = ______ , M3 = ______ , M4 = ______ , M5 = ______
+> Naam bharo: M1 = ______ , M2 = ______ , M3 = Narendra Singh , M4 = ______ , M5 = ______
 
 **Load balance:** M1 ka kaam sabse zyada dependency-wala hai (M2 ke modules chahiye), isliye M2 ko pehle 2 din mein modules dene hain. M4 aur M5 shuru mein RTL ka wait nahi karte: M4 golden model aur TB, M5 traces aur analysis scripts pehle bana lete hain.
 
