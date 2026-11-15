@@ -103,7 +103,7 @@ def main() -> None:
         stage = Path(stage_name)
         for name, content in staged.items():
             atomic_write(stage / f"{name}.trace", content)
-        lock_path = ROOT / ".trace-generation.lock"
+        lock_path = Path(tempfile.gettempdir()) / "mca-capstone-cache-trace.lock"
         with lock_path.open("w", encoding="utf-8") as lock:
             fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
             destinations = {name: ROOT / f"{name}.trace" for name in staged}
