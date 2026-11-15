@@ -97,9 +97,17 @@ def main() -> None:
     generated = generate(args.count, args.seed)
     staged = {name: "".join(f"0 {addr:08x}\n" for addr in addresses)
               for name, addresses in generated.items()}
-    for name, content in staged.items():
-        atomic_write(ROOT / f"{name}.trace", content)
-        print(f"{name}.trace: {len(generated[name])} read accesses")
+    # Materialise the complete set before publishing any destination file.
+    with tempfile.TemporaryDirectory(prefix=".trace-stage-", dir=ROOT) as stage_name:
+        stage = Path(stage_name)
+        for name, content in staged.items():
+            atomic_write(stage / f"{name}.trace", content)
+        for name in staged:
+            destination = ROOT / f"{name}.trace"
+            if destination.is_symlink():
+                raise ValueError(f"refusing to overwrite symlink: {destination}")
+            os.replace(stage / f"{name}.trace", destination)
+            print(f"{name}.trace: {len(generated[name])} read accesses")
 
 if __name__ == "__main__":
     main()
