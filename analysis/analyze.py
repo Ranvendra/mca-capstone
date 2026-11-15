@@ -15,6 +15,18 @@ DEFAULT_TRACES = ROOT / "traces"
 DEFAULT_OUT = ROOT / "analysis" / "results"
 WORD_BYTES = 4
 HASH = 0x9E3779B1
+M5_TRACE_NAMES = ("loop", "matrix_col", "matrix_row", "mixed", "random", "seq", "stride")
+
+
+def discover_m5_traces(traces_dir: Path) -> list[Path]:
+    """Return exactly the seven named M5 workloads, excluding M4 fixtures."""
+    discovered = {path.stem: path for path in traces_dir.glob("*.trace")}
+    missing = [name for name in M5_TRACE_NAMES if name not in discovered]
+    if missing:
+        raise FileNotFoundError(
+            f"Missing required M5 trace(s) in {traces_dir}: {', '.join(missing)}"
+        )
+    return [discovered[name] for name in M5_TRACE_NAMES]
 
 def load_trace(path: Path) -> list[tuple[int, int]]:
     accesses = []
@@ -247,9 +259,9 @@ def main() -> None:
         print(f"Validated {len(accesses)} RTL rows against the reference model; summary written")
         return
 
-    trace_files = sorted(args.traces_dir.glob("*.trace"))
-    if not trace_files:
-        raise SystemExit(f"No traces in {args.traces_dir}; generate them first")
+    # Analyse only the seven declared M5 workloads. M4's sample.trace remains
+    # part of the regression suite but is intentionally not an M5 workload.
+    trace_files = discover_m5_traces(args.traces_dir)
     records, pending = [], {}
     for path in trace_files:
         if not re.fullmatch(r"[A-Za-z0-9_-]+", path.stem):
