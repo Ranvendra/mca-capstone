@@ -82,7 +82,7 @@ test: unit sim
 	@for tr in $(TRACES); do \
 		tname=$$(basename $$tr .trace); \
 		echo "\n--- Testing Trace: $$tname ---"; \
-		$(MAKE) --no-print-directory trace T="$tname" || exit 1; \
+		$(MAKE) --no-print-directory trace T=$$tname || exit 1; \
 	done
 	@echo "\n=================================================="
 	@echo ">>> ALL VERIFICATION SUITE TESTS PASSED <<<"
