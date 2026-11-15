@@ -1,28 +1,118 @@
-.PHONY: traces analysis analysis-base test clean
+# =============================================================================
+# Makefile for Project 6: Direct-Mapped Cache Controller (MCA Capstone)
+# M4 Verification and Automation
+# =============================================================================
 
-PYTHON ?= python3
+IVERILOG    ?= iverilog
+VVP         ?= vvp
+PYTHON      ?= python3
+GTKWAVE     ?= gtkwave
 
-# Rebuild all deterministic trace inputs.
+RTL_DIR     := rtl
+TB_DIR      := tb
+TRACES_DIR  := traces
+ANALYSIS_DIR:= analysis
+RESULTS_DIR := $(ANALYSIS_DIR)/results
+BUILD_DIR   := build
+
+RTL_SRCS    := $(wildcard $(RTL_DIR)/*.v)
+TRACES      := $(wildcard $(TRACES_DIR)/*.trace)
+
+.PHONY: all sim trace test unit wave clean help traces analysis analysis-base
+
+all: test
+
+help:
+	@echo "Available targets:"
+	@echo "  make sim              Run directed self-checking testbench (tb_cache_directed.v)"
+	@echo "  make trace T=<name>   Run RTL sim, golden model, and compare for traces/<name>.trace"
+	@echo "  make test             Run full verification suite (unit + directed + all traces)"
+	@echo "  make unit             Run M2 and M3 unit test suites"
+	@echo "  make wave             Run directed simulation and open waveform with GTKWave"
+	@echo "  make traces           Regenerate deterministic M5 workload traces"
+	@echo "  make analysis         Run M5 reference-model hit/miss and AMAT analysis"
+	@echo "  make analysis-base    Run M5 analysis for the base 1 KiB / 16 B configuration"
+	@echo "  make clean            Remove build artifacts and simulation outputs"
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(RESULTS_DIR):
+	mkdir -p $(RESULTS_DIR)
+
+# -----------------------------------------------------------------------------
+# Unit Tests (M2 and M3)
+# -----------------------------------------------------------------------------
+unit:
+	@echo "=== Running M2 Unit Tests ==="
+	@sh $(TB_DIR)/run_m2_tests.sh
+	@echo "\n=== Running M3 Unit Tests ==="
+	@sh $(TB_DIR)/run_m3_tests.sh
+
+# -----------------------------------------------------------------------------
+# Directed Self-Checking Testbench
+# -----------------------------------------------------------------------------
+sim: $(BUILD_DIR)
+	@echo "=== Compiling Directed Testbench ==="
+	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_directed $(RTL_SRCS) $(TB_DIR)/tb_cache_directed.v
+	@echo "=== Running Directed Testbench ==="
+	$(VVP) $(BUILD_DIR)/tb_cache_directed
+
+# -----------------------------------------------------------------------------
+# Trace-Driven Simulation and Golden Model Verification
+# -----------------------------------------------------------------------------
+trace: $(BUILD_DIR) $(RESULTS_DIR)
+ifndef T
+	$(error Please specify trace name using T=<name>, e.g., make trace T=sample)
+endif
+	@if [ ! -f $(TRACES_DIR)/$(T).trace ]; then \
+		echo "ERROR: Trace file $(TRACES_DIR)/$(T).trace does not exist"; exit 1; \
+	fi
+	@echo "=== Compiling Trace Testbench for $(T) ==="
+	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v
+	@echo "=== Running RTL Simulation on $(T).trace ==="
+	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE=$(TRACES_DIR)/$(T).trace +OUT=$(RESULTS_DIR)/$(T)_sim.csv
+	@echo "=== Running Python Golden Model on $(T).trace ==="
+	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py $(TRACES_DIR)/$(T).trace --out $(RESULTS_DIR)/$(T)_golden.csv
+	@echo "=== Verifying RTL Output vs Golden Model ==="
+	$(PYTHON) $(ANALYSIS_DIR)/compare.py $(RESULTS_DIR)/$(T)_sim.csv $(RESULTS_DIR)/$(T)_golden.csv --check-latency
+
+# -----------------------------------------------------------------------------
+# Comprehensive Test Suite
+# -----------------------------------------------------------------------------
+test: unit sim
+	@echo "\n=== Running Trace Verifications ==="
+	@for tr in $(TRACES); do \
+		tname=$$(basename $$tr .trace); \
+		echo "\n--- Testing Trace: $$tname ---"; \
+		$(MAKE) --no-print-directory trace T=$$tname || exit 1; \
+	done
+	@echo "\n=================================================="
+	@echo ">>> ALL VERIFICATION SUITE TESTS PASSED <<<"
+	@echo "=================================================="
+
+# -----------------------------------------------------------------------------
+# Waveform Inspection
+# -----------------------------------------------------------------------------
+wave: sim
+	@which $(GTKWAVE) >/dev/null 2>&1 && $(GTKWAVE) tb_cache_directed.vcd || \
+		echo "NOTE: gtkwave command not found. VCD generated at tb_cache_directed.vcd"
+
+# -----------------------------------------------------------------------------
+# Cleanup
+# -----------------------------------------------------------------------------
+clean:
+	rm -rf $(BUILD_DIR) *.vcd /tmp/tb_* /tmp/m2_tests /tmp/m3_tests
+	rm -f $(ANALYSIS_DIR)/results/*_reference.csv $(ANALYSIS_DIR)/results/summary.csv $(ANALYSIS_DIR)/results/summary.md $(ANALYSIS_DIR)/results/parameter_sweep.csv $(ANALYSIS_DIR)/results/*.png
+
+# M5 deterministic trace generation and reference-model analysis.
+.PHONY: traces analysis analysis-base
+
 traces:
 	$(PYTHON) traces/gen_traces.py --count 3000 --seed 20261116
 
-# Run the Python reference-model baseline and all parameter sweeps.
 analysis: traces
 	$(PYTHON) analysis/analyze.py
 
-# Run only the base 1 KiB / 16 B configuration.
 analysis-base: traces
 	$(PYTHON) analysis/analyze.py --no-sweep --cache 1024 --block 16 --latency 4
-
-# M4 owns the integrated test target. Keep this target useful once their
-# Makefile/testbench arrives, without silently claiming tests passed today.
-test:
-	@if [ -f tb/run_m4_tests.sh ]; then sh tb/run_m4_tests.sh; \
-	elif [ -f tb/run_m2_tests.sh ] && [ -f tb/run_m3_tests.sh ]; then \
-	  sh tb/run_m2_tests.sh && sh tb/run_m3_tests.sh; \
-	else echo "No complete test runner found; run the available tb/run_*.sh scripts."; exit 1; fi
-
-clean:
-	rm -f analysis/results/*_reference.csv analysis/results/summary.csv
-	rm -f analysis/results/summary.md analysis/results/parameter_sweep.csv
-	rm -f analysis/results/*.png
