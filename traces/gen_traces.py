@@ -98,16 +98,44 @@ def main() -> None:
     staged = {name: "".join(f"0 {addr:08x}\n" for addr in addresses)
               for name, addresses in generated.items()}
     # Materialise the complete set before publishing any destination file.
+    import fcntl
     with tempfile.TemporaryDirectory(prefix=".trace-stage-", dir=ROOT) as stage_name:
         stage = Path(stage_name)
         for name, content in staged.items():
             atomic_write(stage / f"{name}.trace", content)
-        for name in staged:
-            destination = ROOT / f"{name}.trace"
-            if destination.is_symlink():
-                raise ValueError(f"refusing to overwrite symlink: {destination}")
-            os.replace(stage / f"{name}.trace", destination)
-            print(f"{name}.trace: {len(generated[name])} read accesses")
+        lock_path = ROOT / ".trace-generation.lock"
+        with lock_path.open("w", encoding="utf-8") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            destinations = {name: ROOT / f"{name}.trace" for name in staged}
+            # Preflight the entire bundle before replacing any member.
+            for destination in destinations.values():
+                if destination.is_symlink():
+                    raise ValueError(f"refusing to overwrite symlink: {destination}")
+            backups = {}
+            published = []
+            try:
+                for name, destination in destinations.items():
+                    if destination.exists():
+                        fd, backup_name = tempfile.mkstemp(prefix=".trace-backup-", dir=ROOT)
+                        os.close(fd)
+                        os.replace(destination, backup_name)
+                        backups[name] = Path(backup_name)
+                for name, destination in destinations.items():
+                    os.replace(stage / f"{name}.trace", destination)
+                    published.append(destination)
+            except Exception:
+                for destination in published:
+                    destination.unlink(missing_ok=True)
+                for name, backup in backups.items():
+                    os.replace(backup, destinations[name])
+                raise
+            else:
+                for backup in backups.values():
+                    backup.unlink(missing_ok=True)
+            finally:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+            for name in staged:
+                print(f"{name}.trace: {len(generated[name])} read accesses")
 
 if __name__ == "__main__":
     main()
