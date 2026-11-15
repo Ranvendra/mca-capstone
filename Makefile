@@ -60,16 +60,20 @@ trace: $(BUILD_DIR) $(RESULTS_DIR)
 ifndef T
 	$(error Please specify trace name using T=<name>, e.g., make trace T=seq)
 endif
-	@case "$T" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen"; exit 2;; esac
-	@if [ ! -f "$(TRACES_DIR)/$T.trace" ]; then echo "ERROR: missing $(TRACES_DIR)/$T.trace"; exit 1; fi
-	@echo "=== Compiling Trace Testbench for $T ==="
-	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v
-	@echo "=== Running RTL Simulation on $T.trace ==="
-	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$(TRACES_DIR)/$T.trace" +OUT="$(RESULTS_DIR)/$T_sim.csv"
-	@echo "=== Running Python Golden Model on $T.trace ==="
-	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$(TRACES_DIR)/$T.trace" --out "$(RESULTS_DIR)/$T_golden.csv"
-	@echo "=== Verifying RTL Output vs Golden Model ==="
-	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/$T_sim.csv" "$(RESULTS_DIR)/$T_golden.csv" --check-latency
+	@set -eu; \
+	case "${T:-}" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen" >&2; exit 2;; esac; \
+	exec 9>/tmp/mca-capstone-cache-trace.lock; \
+	flock -x 9; \
+	trace_file="$(TRACES_DIR)/$T.trace"; \
+	test -f "$$trace_file" || { echo "ERROR: missing trace: $$trace_file" >&2; exit 1; }; \
+	echo "=== Compiling Trace Testbench for $$T ==="; \
+	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v; \
+	echo "=== Running RTL Simulation on $$T.trace ==="; \
+	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$$trace_file" +OUT="$(RESULTS_DIR)/$$T_sim.csv"; \
+	echo "=== Running Python Golden Model on $$T.trace ==="; \
+	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$$trace_file" --out "$(RESULTS_DIR)/$$T_golden.csv"; \
+	echo "=== Verifying RTL Output vs Golden Model ==="; \
+	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/$$T_sim.csv" "$(RESULTS_DIR)/$$T_golden.csv" --check-latency
 
 # Comprehensive verification suite (M4); committed M5 traces are included automatically.
 test: unit sim
@@ -92,14 +96,27 @@ traces:
 	$(PYTHON) traces/gen_traces.py --count 4096 --seed 20261116
 
 analysis: traces
-	$(PYTHON) analysis/analyze.py
+	@set -eu; exec 9>/tmp/mca-capstone-cache-trace.lock; flock -x 9; $(PYTHON) analysis/analyze.py
 
 analysis-base: traces
-	$(PYTHON) analysis/analyze.py --no-sweep --cache 1024 --block 16 --latency 4
+	@set -eu; exec 9>/tmp/mca-capstone-cache-trace.lock; flock -x 9; $(PYTHON) analysis/analyze.py --no-sweep --cache 1024 --block 16 --latency 4
 
-# Run M4 RTL simulation/comparison first, then independently validate and summarize its CSV.
-analysis-rtl: trace
-	$(PYTHON) analysis/analyze.py --rtl-csv "$(RESULTS_DIR)/$T_sim.csv" --trace "$(TRACES_DIR)/$T.trace" --cache 1024 --block 16 --latency 4
+# Keep simulation, golden comparison and RTL analysis in one cross-process critical section.
+analysis-rtl: $(BUILD_DIR) $(RESULTS_DIR)
+ifndef T
+	$(error Please specify trace name using T=<name>, e.g., make analysis-rtl T=seq)
+endif
+	@set -eu; \
+	case "${T:-}" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen" >&2; exit 2;; esac; \
+	exec 9>/tmp/mca-capstone-cache-trace.lock; \
+	flock -x 9; \
+	trace_file="$(TRACES_DIR)/$T.trace"; \
+	test -f "$$trace_file" || { echo "ERROR: missing trace: $$trace_file" >&2; exit 1; }; \
+	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v; \
+	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$$trace_file" +OUT="$(RESULTS_DIR)/$$T_sim.csv"; \
+	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$$trace_file" --out "$(RESULTS_DIR)/$$T_golden.csv"; \
+	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/$$T_sim.csv" "$(RESULTS_DIR)/$$T_golden.csv" --check-latency; \
+	$(PYTHON) analysis/analyze.py --rtl-csv "$(RESULTS_DIR)/$$T_sim.csv" --trace "$$trace_file" --cache 1024 --block 16 --latency 4
 
 # M3 synthesis workflow; preserve synth/Makefile ownership and implementation.
 synth:
