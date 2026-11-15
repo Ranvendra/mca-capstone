@@ -69,11 +69,11 @@ endif
 	echo "=== Compiling Trace Testbench for $$T ==="; \
 	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v; \
 	echo "=== Running RTL Simulation on $$T.trace ==="; \
-	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$$trace_file" +OUT="$(RESULTS_DIR)/$$T_sim.csv"; \
+	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$$trace_file" +OUT="$(RESULTS_DIR)/${T}_sim.csv"; \
 	echo "=== Running Python Golden Model on $$T.trace ==="; \
-	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$$trace_file" --out "$(RESULTS_DIR)/$$T_golden.csv"; \
+	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$$trace_file" --out "$(RESULTS_DIR)/${T}_golden.csv"; \
 	echo "=== Verifying RTL Output vs Golden Model ==="; \
-	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/$$T_sim.csv" "$(RESULTS_DIR)/$$T_golden.csv" --check-latency
+	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/${T}_sim.csv" "$(RESULTS_DIR)/${T}_golden.csv" --check-latency
 
 # Comprehensive verification suite (M4); committed M5 traces are included automatically.
 test: unit sim
@@ -81,7 +81,7 @@ test: unit sim
 	@for tr in $(TRACES); do \
 		tname=$$(basename $$tr .trace); \
 		echo "\n--- Testing Trace: $$tname ---"; \
-		$(MAKE) --no-print-directory trace T=$$tname || exit 1; \
+		$(MAKE) --no-print-directory trace T="$tname" || exit 1; \
 	done
 	@echo "\n=================================================="
 	@echo ">>> ALL VERIFICATION SUITE TESTS PASSED <<<"
@@ -113,10 +113,10 @@ endif
 	trace_file="$(TRACES_DIR)/$$T.trace"; \
 	test -f "$$trace_file" || { echo "ERROR: missing trace: $$trace_file" >&2; exit 1; }; \
 	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v; \
-	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$$trace_file" +OUT="$(RESULTS_DIR)/$$T_sim.csv"; \
-	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$$trace_file" --out "$(RESULTS_DIR)/$$T_golden.csv"; \
-	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/$$T_sim.csv" "$(RESULTS_DIR)/$$T_golden.csv" --check-latency; \
-	$(PYTHON) analysis/analyze.py --rtl-csv "$(RESULTS_DIR)/$$T_sim.csv" --trace "$$trace_file" --cache 1024 --block 16 --latency 4
+	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$$trace_file" +OUT="$(RESULTS_DIR)/${T}_sim.csv"; \
+	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$$trace_file" --out "$(RESULTS_DIR)/${T}_golden.csv"; \
+	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/${T}_sim.csv" "$(RESULTS_DIR)/${T}_golden.csv" --check-latency; \
+	$(PYTHON) analysis/analyze.py --rtl-csv "$(RESULTS_DIR)/${T}_sim.csv" --trace "$$trace_file" --cache 1024 --block 16 --latency 4
 
 # M3 synthesis workflow; preserve synth/Makefile ownership and implementation.
 synth:
