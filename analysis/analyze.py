@@ -275,23 +275,30 @@ def main() -> None:
               "## Evidence boundary", "",
               "Default outputs are Python reference-model results, not RTL measurements. RTL mode validates every CSV row (index, operation, address, hit/miss, returned data and latency) against the supplied trace and reference model before reporting measured RTL metrics.", ""]
     pending["summary.md"] = "\n".join(lines)
-    # All outputs are computed before publication; each file replacement is atomic.
-    for filename, content in pending.items():
-        atomic_write(args.out_dir / filename, content)
 
-    if not args.no_sweep:
-        sweep = []
-        for cache_size in (512, 1024, 2048, 4096):
-            for block_size in (8, 16, 32, 64):
-                if block_size > cache_size:
-                    continue
-                for path in trace_files:
-                    _, summary = simulate(load_trace(path), cache_size, block_size, args.latency)
-                    sweep.append({"trace": path.stem, "cache_bytes": cache_size,
-                                  "block_bytes": block_size, "mem_latency": args.latency, **summary})
-        write_text = csv_text(sweep)
-        atomic_write(args.out_dir / "parameter_sweep.csv", write_text)
-        make_plots(sweep, args.out_dir)
+    # Build the entire result set in a unique staging directory. Publish only
+    # after every trace, sweep table and optional plot has been generated.
+    with tempfile.TemporaryDirectory(prefix=".m5-analysis-stage-", dir=args.out_dir) as stage_name:
+        stage = Path(stage_name)
+        for filename, content in pending.items():
+            atomic_write(stage / filename, content)
+        if not args.no_sweep:
+            sweep = []
+            for cache_size in (512, 1024, 2048, 4096):
+                for block_size in (8, 16, 32, 64):
+                    if block_size > cache_size:
+                        continue
+                    for path in trace_files:
+                        _, summary = simulate(load_trace(path), cache_size, block_size, args.latency)
+                        sweep.append({"trace": path.stem, "cache_bytes": cache_size,
+                                      "block_bytes": block_size, "mem_latency": args.latency, **summary})
+            atomic_write(stage / "parameter_sweep.csv", csv_text(sweep))
+            make_plots(sweep, stage)
+        for staged_file in stage.iterdir():
+            destination = args.out_dir / staged_file.name
+            if destination.is_symlink():
+                raise ValueError(f"refusing to overwrite symlink: {destination}")
+            os.replace(staged_file, destination)
     print(f"Analysed {len(trace_files)} traces; results: {args.out_dir}")
 
 if __name__ == "__main__":
