@@ -25,7 +25,10 @@ jobs:
 
       - name: Check Python syntax
         run: |
-          python3 -m py_compile traces/gen_traces.py analysis/analyze.py analysis/golden_model.py analysis/compare.py
+          python3 -m py_compile traces/gen_traces.py analysis/analyze.py analysis/golden_model.py analysis/compare.py analysis/test_analyze.py
+
+      - name: Run M5 analysis unit tests
+        run: python3 -m unittest analysis.test_analyze -v
 
       - name: Run integrated M2-M4 and M5 trace verification
         run: make test
