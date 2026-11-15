@@ -61,10 +61,10 @@ ifndef T
 	$(error Please specify trace name using T=<name>, e.g., make trace T=seq)
 endif
 	@set -eu; \
-	case "${T:-}" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen" >&2; exit 2;; esac; \
+	case "$${T:-}" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen" >&2; exit 2;; esac; \
 	exec 9>/tmp/mca-capstone-cache-trace.lock; \
 	flock -x 9; \
-	trace_file="$(TRACES_DIR)/$T.trace"; \
+	trace_file="$(TRACES_DIR)/$$T.trace"; \
 	test -f "$$trace_file" || { echo "ERROR: missing trace: $$trace_file" >&2; exit 1; }; \
 	echo "=== Compiling Trace Testbench for $$T ==="; \
 	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v; \
@@ -107,10 +107,10 @@ ifndef T
 	$(error Please specify trace name using T=<name>, e.g., make analysis-rtl T=seq)
 endif
 	@set -eu; \
-	case "${T:-}" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen" >&2; exit 2;; esac; \
+	case "$${T:-}" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen" >&2; exit 2;; esac; \
 	exec 9>/tmp/mca-capstone-cache-trace.lock; \
 	flock -x 9; \
-	trace_file="$(TRACES_DIR)/$T.trace"; \
+	trace_file="$(TRACES_DIR)/$$T.trace"; \
 	test -f "$$trace_file" || { echo "ERROR: missing trace: $$trace_file" >&2; exit 1; }; \
 	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v; \
 	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$$trace_file" +OUT="$(RESULTS_DIR)/$$T_sim.csv"; \
