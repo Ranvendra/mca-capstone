@@ -1,0 +1,36 @@
+# fmax_ice40_c512_b16_bram : nextpnr-ice40 --hx8k --package ct256 --seed 1 (top = fmax_wrap)
+# "nextpnr-ice40" -- Next Generation Place and Route (Version )
+Info: 	         ICESTORM_LC:     909/   7680    11%
+Info: 	        ICESTORM_RAM:      10/     32    31%
+Info: 	               SB_IO:       3/    206     1%
+Info: 	               SB_GB:       2/      8    25%
+Info: Max frequency for clock 'clk$SB_IO_IN_$glb_clk': 89.45 MHz (PASS at 50.00 MHz)
+# critical path (after routing):
+Info: Critical path report for clock 'clk$SB_IO_IN_$glb_clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-to-q  2.15  2.15 Source u_cache.u_tag_ram.mem.0.0_RAM.RDATA_12
+Info:    routing  0.59  2.73 Net u_cache.u_tag_ram.mem.0.0_RDATA_11[1] (25,13) -> (26,13)
+Info:                          Sink u_cache.u_tag_ram.mem.0.0_RDATA_10_SB_LUT4_O_LC.I3
+Info:      logic  0.31  3.05 Source u_cache.u_tag_ram.mem.0.0_RDATA_10_SB_LUT4_O_LC.O
+Info:    routing  0.59  3.64 Net u_cache.u_tag_ram.mem.0.0_RDATA_10[2] (26,13) -> (26,13)
+Info:                          Sink u_cache.u_tag_ram.mem.0.0_RDATA_4_SB_LUT4_O_1_LC.I2
+Info:      logic  0.38  4.01 Source u_cache.u_tag_ram.mem.0.0_RDATA_4_SB_LUT4_O_1_LC.O
+Info:    routing  0.59  4.60 Net u_cache.u_tag_ram.mem.0.0_RDATA_4[3] (26,13) -> (26,13)
+Info:                          Sink u_cache.u_tag_ram.mem.0.1_RDATA_1_SB_LUT4_I3_O_SB_LUT4_O_LC.I3
+Info:      logic  0.31  4.92 Source u_cache.u_tag_ram.mem.0.1_RDATA_1_SB_LUT4_I3_O_SB_LUT4_O_LC.O
+Info:    routing  0.90  5.82 Net u_cache.u_tag_ram.mem.0.1_RDATA_1_SB_LUT4_I3_O[1] (26,13) -> (24,13)
+Info:                          Sink u_cache.u_tag_ram.mem.0.1_RDATA_2_SB_LUT4_I0_O_SB_LUT4_O_2_LC.I1
+Info:      logic  0.40  6.22 Source u_cache.u_tag_ram.mem.0.1_RDATA_2_SB_LUT4_I0_O_SB_LUT4_O_2_LC.O
+Info:    routing  0.59  6.81 Net u_cache.u_tag_ram.mem.0.1_RDATA_2_SB_LUT4_I0_O[3] (24,13) -> (23,13)
+Info:                          Sink u_cache.cpu_valid_SB_LUT4_I3_O_SB_LUT4_O_2_LC.I3
+Info:      logic  0.31  7.12 Source u_cache.cpu_valid_SB_LUT4_I3_O_SB_LUT4_O_2_LC.O
+Info:    routing  0.59  7.71 Net u_cache.cpu_valid_SB_LUT4_I3_O[3] (23,13) -> (22,13)
+Info:                          Sink out_q_SB_DFF_Q_10_D_SB_LUT4_O_1_LC.I3
+Info:      logic  0.31  8.03 Source out_q_SB_DFF_Q_10_D_SB_LUT4_O_1_LC.O
+Info:    routing  0.90  8.93 Net out_q_SB_DFF_Q_10_D[2] (22,13) -> (19,13)
+Info:                          Sink out_q_SB_DFF_Q_10_D_SB_LUT4_I3_LC.I3
+Info:      logic  0.31  9.24 Source out_q_SB_DFF_Q_10_D_SB_LUT4_I3_LC.O
+Info:    routing  1.84  11.08 Net out_q_SB_DFF_Q_10_D_SB_LUT4_I3_O (19,13) -> (20,12)
+Info:                          Sink out_d_SB_DFFESR_Q_7_D_SB_LUT4_O_LC.CEN
+Info:      setup  0.10  11.18 Source out_d_SB_DFFESR_Q_7_D_SB_LUT4_O_LC.CEN
+Info: 4.60 ns logic, 6.58 ns routing

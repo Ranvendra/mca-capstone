@@ -4,11 +4,9 @@
 //   cold miss -> refill -> same-block hits, conflict miss, stat pulse rule,
 //   latency numbers used in docs/fsm.md, and (WS=1) write-through behaviour.
 //
-// Run (before real M2/M3 exist, with the temporary stubs):
-//   iverilog -g2012 -o /tmp/m1_smoke tb/stubs/m2_m3_stubs.v rtl/cache_controller.v \
-//            rtl/cache_top.v tb/tb_m1_smoke.v && vvp /tmp/m1_smoke
+// Run (all RTL is real now; the temporary stub file has been removed):
+//   iverilog -g2012 -o /tmp/m1_smoke rtl/*.v tb/tb_m1_smoke.v && vvp /tmp/m1_smoke
 // With write support:  add  -Ptb_m1_smoke.WS=1
-// With the real files: replace the stub file by rtl/*.v (except nothing else needed).
 // Waveform: tb_m1_smoke.vcd
 // =============================================================================
 `timescale 1ns/1ps

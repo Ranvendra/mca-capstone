@@ -1,0 +1,8 @@
+# fmax_ice40_c512_b16_nobram : nextpnr-ice40 --hx8k --package ct256 --seed 1 (top = fmax_wrap)
+# "nextpnr-ice40" -- Next Generation Place and Route (Version )
+Info: 	         ICESTORM_LC:    9616/   7680   125%
+Info: 	        ICESTORM_RAM:       0/     32     0%
+Info: 	               SB_IO:       3/    206     1%
+Info: 	               SB_GB:       6/      8    75%
+ERROR: Unable to place cell 'out_q_SB_DFF_Q_84_D_SB_LUT4_O_I3_SB_LUT4_O_I3_SB_LUT4_O_1_I3_SB_LUT4_O_2_I3_SB_LUT4_O_I3_SB_LUT4_O_1_LC', no BELs remaining to implement cell type 'ICESTORM_LC'
+# critical path (after routing):

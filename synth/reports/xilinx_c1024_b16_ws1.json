@@ -1,0 +1,67 @@
+{
+   "creator": "Yosys 0.71+post (git sha1 5628c13240f670b97aaaca3d47940c4afb8ff572, Release, AppleClang clang++ 21.0.0.21000401)",
+   "invocation": "stat -json -top cache_top ",
+   "modules": {
+      "\\cache_top": {
+         "num_wires":         1347,
+         "num_wire_bits":     2252,
+         "num_pub_wires":     34,
+         "num_pub_wire_bits": 526,
+         "num_ports":         18,
+         "num_port_bits":     266,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         1679,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$scopeinfo": 6,
+            "BUFG": 1,
+            "CARRY4": 18,
+            "FDRE": 134,
+            "IBUF": 101,
+            "INV": 9,
+            "LUT2": 9,
+            "LUT3": 394,
+            "LUT4": 49,
+            "LUT5": 36,
+            "LUT6": 221,
+            "MUXF7": 258,
+            "MUXF8": 128,
+            "OBUF": 165,
+            "RAM64X1S": 150
+         }
+      }
+   },
+      "design": {
+         "num_wires":         1347,
+         "num_wire_bits":     2252,
+         "num_pub_wires":     34,
+         "num_pub_wire_bits": 526,
+         "num_ports":         18,
+         "num_port_bits":     266,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         1679,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$scopeinfo": 6,
+            "BUFG": 1,
+            "CARRY4": 18,
+            "FDRE": 134,
+            "IBUF": 101,
+            "INV": 9,
+            "LUT2": 9,
+            "LUT3": 394,
+            "LUT4": 49,
+            "LUT5": 36,
+            "LUT6": 221,
+            "MUXF7": 258,
+            "MUXF8": 128,
+            "OBUF": 165,
+            "RAM64X1S": 150
+         }
+      }
+}
+

@@ -161,7 +161,7 @@ main_memory    #(MEM_WORDS, MEM_LATENCY)
 
 Extra decisions (M1): `cpu_we=1` jab `WRITE_SUPPORT=0` ho to request read ki tarah handle hota hai (CPU hang nahi hota).
 `latency_cycles` = `cpu_valid` assert hone se `cpu_ready` ke cycle tak (us cycle ko milake). Hit = 1, miss = `W*(MEM_LATENCY+1)+2` (base config, MEM_LATENCY=4: 22). Details: `docs/fsm.md`.
-Temporary stand-in modules `tb/stubs/m2_m3_stubs.v` hain; real M2/M3 files merge hone par delete karni hain.
+Temporary stand-in file `tb/stubs/m2_m3_stubs.v` ab delete ho chuki hai (real M2 + M3 files aa gayi hain). Compile: `iverilog -g2012 rtl/*.v tb/<tb>.v`. `main_memory` ke do extra outputs hain: `mem_read_count`, `mem_write_count` (details: `docs/main_memory.md`).
 
 ### 4.4 Trace format (M5 banayega, M4 ka TB padhega)
 
