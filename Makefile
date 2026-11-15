@@ -60,11 +60,11 @@ trace: $(BUILD_DIR) $(RESULTS_DIR)
 ifndef T
 	$(error Please specify trace name using T=<name>, e.g., make trace T=seq)
 endif
-	@case "${T}" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen"; exit 2;; esac
-	@if [ ! -f "$(TRACES_DIR)/ ${T}.trace" ]; then echo "ERROR: missing $(TRACES_DIR)/${T}.trace"; exit 1; fi
+	@case "$T" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen"; exit 2;; esac
+	@if [ ! -f "$(TRACES_DIR)/$T.trace" ]; then echo "ERROR: missing $(TRACES_DIR)/$T.trace"; exit 1; fi
 	@echo "=== Compiling Trace Testbench for ${T} ==="
 	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v
-	@echo "=== Running RTL Simulation on $(T).trace ==="
+	@echo "=== Running RTL Simulation on $T.trace ==="
 	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$(TRACES_DIR)/$(T).trace" +OUT="$(RESULTS_DIR)/$(T)_sim.csv"
 	@echo "=== Running Python Golden Model on $(T).trace ==="
 	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$(TRACES_DIR)/$(T).trace" --out "$(RESULTS_DIR)/$(T)_golden.csv"
