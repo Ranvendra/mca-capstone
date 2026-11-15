@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 380" width="100%" height="380" style="background-color: #1e1e2e; font-family: monospace;">
+<style>
+  .title { fill: #cdd6f4; font-size: 16px; font-weight: bold; }
+  .sig-name { fill: #89b4fa; font-size: 13px; font-weight: bold; }
+  .bus-text { fill: #11111b; font-size: 11px; font-weight: bold; text-anchor: middle; }
+  .wire-hi { stroke: #a6e3a1; stroke-width: 2.5; fill: none; }
+  .wire-lo { stroke: #6c7086; stroke-width: 2; fill: none; }
+  .wire-pulse { stroke: #f9e2af; stroke-width: 2.5; fill: none; }
+  .bus-poly { fill: #b4befe; stroke: #89b4fa; stroke-width: 1.5; }
+  .grid { stroke: #313244; stroke-width: 1; stroke-dasharray: 4,4; }
+  .cycle-num { fill: #6c7086; font-size: 10px; text-anchor: middle; }
+</style>
+<text x="30" y="30" class="title">Waveform 3: Conflict Miss Ping-Pong (Index Collision Evictions)</text>
+<text x="174.0" y="48" class="cycle-num">C1</text>
+<line x1="140" y1="55" x2="140" y2="350" class="grid" />
+<text x="242.0" y="48" class="cycle-num">C2</text>
+<line x1="208" y1="55" x2="208" y2="350" class="grid" />
+<text x="310.0" y="48" class="cycle-num">C3</text>
+<line x1="276" y1="55" x2="276" y2="350" class="grid" />
+<text x="378.0" y="48" class="cycle-num">C4</text>
+<line x1="344" y1="55" x2="344" y2="350" class="grid" />
+<text x="446.0" y="48" class="cycle-num">C5</text>
+<line x1="412" y1="55" x2="412" y2="350" class="grid" />
+<text x="514.0" y="48" class="cycle-num">C6</text>
+<line x1="480" y1="55" x2="480" y2="350" class="grid" />
+<text x="582.0" y="48" class="cycle-num">C7</text>
+<line x1="548" y1="55" x2="548" y2="350" class="grid" />
+<text x="650.0" y="48" class="cycle-num">C8</text>
+<line x1="616" y1="55" x2="616" y2="350" class="grid" />
+<text x="718.0" y="48" class="cycle-num">C9</text>
+<line x1="684" y1="55" x2="684" y2="350" class="grid" />
+<text x="786.0" y="48" class="cycle-num">C10</text>
+<line x1="752" y1="55" x2="752" y2="350" class="grid" />
+<text x="854.0" y="48" class="cycle-num">C11</text>
+<line x1="820" y1="55" x2="820" y2="350" class="grid" />
+<text x="922.0" y="48" class="cycle-num">C12</text>
+<line x1="888" y1="55" x2="888" y2="350" class="grid" />
+<line x1="956" y1="55" x2="956" y2="350" class="grid" />
+<text x="25" y="80" class="sig-name">clk</text>
+<path d="M 140 84 L 140 66 L 174.0 66 L 174.0 84 L 208 84 M 208 84 L 208 66 L 242.0 66 L 242.0 84 L 276 84 M 276 84 L 276 66 L 310.0 66 L 310.0 84 L 344 84 M 344 84 L 344 66 L 378.0 66 L 378.0 84 L 412 84 M 412 84 L 412 66 L 446.0 66 L 446.0 84 L 480 84 M 480 84 L 480 66 L 514.0 66 L 514.0 84 L 548 84 M 548 84 L 548 66 L 582.0 66 L 582.0 84 L 616 84 M 616 84 L 616 66 L 650.0 66 L 650.0 84 L 684 84 M 684 84 L 684 66 L 718.0 66 L 718.0 84 L 752 84 M 752 84 L 752 66 L 786.0 66 L 786.0 84 L 820 84 M 820 84 L 820 66 L 854.0 66 L 854.0 84 L 888 84 M 888 84 L 888 66 L 922.0 66 L 922.0 84 L 956 84" stroke="#cdd6f4" stroke-width="1.5" fill="none" />
+<text x="25" y="120" class="sig-name">cpu_valid</text>
+<path d="M 140 106 L 208 106 L 276 106 L 276 124 L 344 124 L 344 106 L 412 106 L 480 106 L 480 124 L 548 124 L 548 106 L 616 106 L 684 106 L 684 124 L 752 124 L 752 106 L 820 106 L 888 106 L 888 124 L 956 124" class="wire-hi" />
+<text x="25" y="160" class="sig-name">cpu_addr</text>
+<polygon points="142,155 146,146 270,146 274,155 270,164 146,164" class="bus-poly" /><text x="208.0" y="159" class="bus-text">0x2010</text>
+<line x1="276" y1="155" x2="344" y2="155" stroke="#45475a" stroke-width="1.5" />
+<polygon points="346,155 350,146 474,146 478,155 474,164 350,164" class="bus-poly" /><text x="412.0" y="159" class="bus-text">0x2410</text>
+<line x1="480" y1="155" x2="548" y2="155" stroke="#45475a" stroke-width="1.5" />
+<polygon points="550,155 554,146 678,146 682,155 678,164 554,164" class="bus-poly" /><text x="616.0" y="159" class="bus-text">0x2010</text>
+<line x1="684" y1="155" x2="752" y2="155" stroke="#45475a" stroke-width="1.5" />
+<polygon points="754,155 758,146 882,146 886,155 882,164 758,164" class="bus-poly" /><text x="820.0" y="159" class="bus-text">0x2410</text>
+<line x1="888" y1="155" x2="956" y2="155" stroke="#45475a" stroke-width="1.5" />
+<text x="25" y="200" class="sig-name">FSM state</text>
+<polygon points="142,195 146,186 202,186 206,195 202,204 146,204" class="bus-poly" /><text x="174.0" y="199" class="bus-text">IDLE</text>
+<polygon points="210,195 214,186 270,186 274,195 270,204 214,204" class="bus-poly" /><text x="242.0" y="199" class="bus-text">REFILL</text>
+<line x1="276" y1="195" x2="344" y2="195" stroke="#45475a" stroke-width="1.5" />
+<polygon points="346,195 350,186 406,186 410,195 406,204 350,204" class="bus-poly" /><text x="378.0" y="199" class="bus-text">IDLE</text>
+<polygon points="414,195 418,186 474,186 478,195 474,204 418,204" class="bus-poly" /><text x="446.0" y="199" class="bus-text">REFILL</text>
+<line x1="480" y1="195" x2="548" y2="195" stroke="#45475a" stroke-width="1.5" />
+<polygon points="550,195 554,186 610,186 614,195 610,204 554,204" class="bus-poly" /><text x="582.0" y="199" class="bus-text">IDLE</text>
+<polygon points="618,195 622,186 678,186 682,195 678,204 622,204" class="bus-poly" /><text x="650.0" y="199" class="bus-text">REFILL</text>
+<line x1="684" y1="195" x2="752" y2="195" stroke="#45475a" stroke-width="1.5" />
+<polygon points="754,195 758,186 814,186 818,195 814,204 758,204" class="bus-poly" /><text x="786.0" y="199" class="bus-text">IDLE</text>
+<polygon points="822,195 826,186 882,186 886,195 882,204 826,204" class="bus-poly" /><text x="854.0" y="199" class="bus-text">REFILL</text>
+<line x1="888" y1="195" x2="956" y2="195" stroke="#45475a" stroke-width="1.5" />
+<text x="25" y="240" class="sig-name">stat_miss</text>
+<path d="M 140 226 L 208 226 L 208 244 L 276 244 L 344 244 L 344 226 L 412 226 L 412 244 L 480 244 L 548 244 L 548 226 L 616 226 L 616 244 L 684 244 L 752 244 L 752 226 L 820 226 L 820 244 L 888 244 L 956 244" class="wire-pulse" />
+<text x="25" y="280" class="sig-name">stat_hit</text>
+<path d="M 140 284 L 208 284 L 276 284 L 344 284 L 412 284 L 480 284 L 548 284 L 616 284 L 684 284 L 752 284 L 820 284 L 888 284 L 956 284" class="wire-pulse" />
+<text x="25" y="320" class="sig-name">cpu_ready</text>
+<path d="M 140 324 L 208 324 L 276 324 L 276 306 L 344 306 L 344 324 L 412 324 L 480 324 L 480 306 L 548 306 L 548 324 L 616 324 L 684 324 L 684 306 L 752 306 L 752 324 L 820 324 L 888 324 L 888 306 L 956 306" class="wire-pulse" />
+</svg>

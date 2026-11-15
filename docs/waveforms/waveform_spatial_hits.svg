@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" width="100%" height="420" style="background-color: #1e1e2e; font-family: monospace;">
+<style>
+  .title { fill: #cdd6f4; font-size: 16px; font-weight: bold; }
+  .sig-name { fill: #89b4fa; font-size: 13px; font-weight: bold; }
+  .bus-text { fill: #11111b; font-size: 11px; font-weight: bold; text-anchor: middle; }
+  .wire-hi { stroke: #a6e3a1; stroke-width: 2.5; fill: none; }
+  .wire-lo { stroke: #6c7086; stroke-width: 2; fill: none; }
+  .wire-pulse { stroke: #f9e2af; stroke-width: 2.5; fill: none; }
+  .bus-poly { fill: #b4befe; stroke: #89b4fa; stroke-width: 1.5; }
+  .grid { stroke: #313244; stroke-width: 1; stroke-dasharray: 4,4; }
+  .cycle-num { fill: #6c7086; font-size: 10px; text-anchor: middle; }
+</style>
+<text x="30" y="30" class="title">Waveform 2: Spatial Locality Sequential Hits (1 Cycle Each)</text>
+<text x="222.0" y="48" class="cycle-num">C1</text>
+<line x1="140" y1="55" x2="140" y2="390" class="grid" />
+<text x="386.0" y="48" class="cycle-num">C2</text>
+<line x1="304" y1="55" x2="304" y2="390" class="grid" />
+<text x="550.0" y="48" class="cycle-num">C3</text>
+<line x1="468" y1="55" x2="468" y2="390" class="grid" />
+<text x="714.0" y="48" class="cycle-num">C4</text>
+<line x1="632" y1="55" x2="632" y2="390" class="grid" />
+<text x="878.0" y="48" class="cycle-num">C5</text>
+<line x1="796" y1="55" x2="796" y2="390" class="grid" />
+<line x1="960" y1="55" x2="960" y2="390" class="grid" />
+<text x="25" y="80" class="sig-name">clk</text>
+<path d="M 140 84 L 140 66 L 222.0 66 L 222.0 84 L 304 84 M 304 84 L 304 66 L 386.0 66 L 386.0 84 L 468 84 M 468 84 L 468 66 L 550.0 66 L 550.0 84 L 632 84 M 632 84 L 632 66 L 714.0 66 L 714.0 84 L 796 84 M 796 84 L 796 66 L 878.0 66 L 878.0 84 L 960 84" stroke="#cdd6f4" stroke-width="1.5" fill="none" />
+<text x="25" y="120" class="sig-name">cpu_valid</text>
+<path d="M 140 106 L 304 106 L 468 106 L 632 106 L 796 106 L 796 124 L 960 124" class="wire-hi" />
+<text x="25" y="160" class="sig-name">cpu_addr</text>
+<polygon points="142,155 146,146 298,146 302,155 298,164 146,164" class="bus-poly" /><text x="222.0" y="159" class="bus-text">0x1000</text>
+<polygon points="306,155 310,146 462,146 466,155 462,164 310,164" class="bus-poly" /><text x="386.0" y="159" class="bus-text">0x1004</text>
+<polygon points="470,155 474,146 626,146 630,155 626,164 474,164" class="bus-poly" /><text x="550.0" y="159" class="bus-text">0x1008</text>
+<polygon points="634,155 638,146 790,146 794,155 790,164 638,164" class="bus-poly" /><text x="714.0" y="159" class="bus-text">0x100C</text>
+<line x1="796" y1="155" x2="960" y2="155" stroke="#45475a" stroke-width="1.5" />
+<text x="25" y="200" class="sig-name">FSM state</text>
+<polygon points="142,195 146,186 954,186 958,195 954,204 146,204" class="bus-poly" /><text x="550.0" y="199" class="bus-text">IDLE</text>
+<text x="25" y="240" class="sig-name">stat_hit</text>
+<path d="M 140 226 L 304 226 L 468 226 L 632 226 L 796 226 L 796 244 L 960 244" class="wire-pulse" />
+<text x="25" y="280" class="sig-name">cpu_ready</text>
+<path d="M 140 266 L 304 266 L 468 266 L 632 266 L 796 266 L 796 284 L 960 284" class="wire-pulse" />
+<text x="25" y="320" class="sig-name">cpu_rdata</text>
+<polygon points="142,315 146,306 298,306 302,315 298,324 146,324" class="bus-poly" /><text x="222.0" y="319" class="bus-text">W0</text>
+<polygon points="306,315 310,306 462,306 466,315 462,324 310,324" class="bus-poly" /><text x="386.0" y="319" class="bus-text">W1</text>
+<polygon points="470,315 474,306 626,306 630,315 626,324 474,324" class="bus-poly" /><text x="550.0" y="319" class="bus-text">W2</text>
+<polygon points="634,315 638,306 790,306 794,315 790,324 638,324" class="bus-poly" /><text x="714.0" y="319" class="bus-text">W3</text>
+<line x1="796" y1="315" x2="960" y2="315" stroke="#45475a" stroke-width="1.5" />
+<text x="25" y="360" class="sig-name">mem_req</text>
+<path d="M 140 364 L 304 364 L 468 364 L 632 364 L 796 364 L 960 364" class="wire-hi" />
+</svg>

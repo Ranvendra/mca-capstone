@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="100%" height="500" style="background-color: #1e1e2e; font-family: monospace;">
+<style>
+  .title { fill: #cdd6f4; font-size: 16px; font-weight: bold; }
+  .sig-name { fill: #89b4fa; font-size: 13px; font-weight: bold; }
+  .bus-text { fill: #11111b; font-size: 11px; font-weight: bold; text-anchor: middle; }
+  .wire-hi { stroke: #a6e3a1; stroke-width: 2.5; fill: none; }
+  .wire-lo { stroke: #6c7086; stroke-width: 2; fill: none; }
+  .wire-pulse { stroke: #f9e2af; stroke-width: 2.5; fill: none; }
+  .bus-poly { fill: #b4befe; stroke: #89b4fa; stroke-width: 1.5; }
+  .grid { stroke: #313244; stroke-width: 1; stroke-dasharray: 4,4; }
+  .cycle-num { fill: #6c7086; font-size: 10px; text-anchor: middle; }
+</style>
+<text x="30" y="30" class="title">Waveform 1: Cold Miss and 4-Word Refill Sequence (22 Cycles)</text>
+<text x="157.5" y="48" class="cycle-num">C1</text>
+<line x1="140" y1="55" x2="140" y2="470" class="grid" />
+<text x="192.5" y="48" class="cycle-num">C2</text>
+<line x1="175" y1="55" x2="175" y2="470" class="grid" />
+<text x="227.5" y="48" class="cycle-num">C3</text>
+<line x1="210" y1="55" x2="210" y2="470" class="grid" />
+<text x="262.5" y="48" class="cycle-num">C4</text>
+<line x1="245" y1="55" x2="245" y2="470" class="grid" />
+<text x="297.5" y="48" class="cycle-num">C5</text>
+<line x1="280" y1="55" x2="280" y2="470" class="grid" />
+<text x="332.5" y="48" class="cycle-num">C6</text>
+<line x1="315" y1="55" x2="315" y2="470" class="grid" />
+<text x="367.5" y="48" class="cycle-num">C7</text>
+<line x1="350" y1="55" x2="350" y2="470" class="grid" />
+<text x="402.5" y="48" class="cycle-num">C8</text>
+<line x1="385" y1="55" x2="385" y2="470" class="grid" />
+<text x="437.5" y="48" class="cycle-num">C9</text>
+<line x1="420" y1="55" x2="420" y2="470" class="grid" />
+<text x="472.5" y="48" class="cycle-num">C10</text>
+<line x1="455" y1="55" x2="455" y2="470" class="grid" />
+<text x="507.5" y="48" class="cycle-num">C11</text>
+<line x1="490" y1="55" x2="490" y2="470" class="grid" />
+<text x="542.5" y="48" class="cycle-num">C12</text>
+<line x1="525" y1="55" x2="525" y2="470" class="grid" />
+<text x="577.5" y="48" class="cycle-num">C13</text>
+<line x1="560" y1="55" x2="560" y2="470" class="grid" />
+<text x="612.5" y="48" class="cycle-num">C14</text>
+<line x1="595" y1="55" x2="595" y2="470" class="grid" />
+<text x="647.5" y="48" class="cycle-num">C15</text>
+<line x1="630" y1="55" x2="630" y2="470" class="grid" />
+<text x="682.5" y="48" class="cycle-num">C16</text>
+<line x1="665" y1="55" x2="665" y2="470" class="grid" />
+<text x="717.5" y="48" class="cycle-num">C17</text>
+<line x1="700" y1="55" x2="700" y2="470" class="grid" />
+<text x="752.5" y="48" class="cycle-num">C18</text>
+<line x1="735" y1="55" x2="735" y2="470" class="grid" />
+<text x="787.5" y="48" class="cycle-num">C19</text>
+<line x1="770" y1="55" x2="770" y2="470" class="grid" />
+<text x="822.5" y="48" class="cycle-num">C20</text>
+<line x1="805" y1="55" x2="805" y2="470" class="grid" />
+<text x="857.5" y="48" class="cycle-num">C21</text>
+<line x1="840" y1="55" x2="840" y2="470" class="grid" />
+<text x="892.5" y="48" class="cycle-num">C22</text>
+<line x1="875" y1="55" x2="875" y2="470" class="grid" />
+<text x="927.5" y="48" class="cycle-num">C23</text>
+<line x1="910" y1="55" x2="910" y2="470" class="grid" />
+<line x1="945" y1="55" x2="945" y2="470" class="grid" />
+<text x="25" y="80" class="sig-name">clk</text>
+<path d="M 140 84 L 140 66 L 157.5 66 L 157.5 84 L 175 84 M 175 84 L 175 66 L 192.5 66 L 192.5 84 L 210 84 M 210 84 L 210 66 L 227.5 66 L 227.5 84 L 245 84 M 245 84 L 245 66 L 262.5 66 L 262.5 84 L 280 84 M 280 84 L 280 66 L 297.5 66 L 297.5 84 L 315 84 M 315 84 L 315 66 L 332.5 66 L 332.5 84 L 350 84 M 350 84 L 350 66 L 367.5 66 L 367.5 84 L 385 84 M 385 84 L 385 66 L 402.5 66 L 402.5 84 L 420 84 M 420 84 L 420 66 L 437.5 66 L 437.5 84 L 455 84 M 455 84 L 455 66 L 472.5 66 L 472.5 84 L 490 84 M 490 84 L 490 66 L 507.5 66 L 507.5 84 L 525 84 M 525 84 L 525 66 L 542.5 66 L 542.5 84 L 560 84 M 560 84 L 560 66 L 577.5 66 L 577.5 84 L 595 84 M 595 84 L 595 66 L 612.5 66 L 612.5 84 L 630 84 M 630 84 L 630 66 L 647.5 66 L 647.5 84 L 665 84 M 665 84 L 665 66 L 682.5 66 L 682.5 84 L 700 84 M 700 84 L 700 66 L 717.5 66 L 717.5 84 L 735 84 M 735 84 L 735 66 L 752.5 66 L 752.5 84 L 770 84 M 770 84 L 770 66 L 787.5 66 L 787.5 84 L 805 84 M 805 84 L 805 66 L 822.5 66 L 822.5 84 L 840 84 M 840 84 L 840 66 L 857.5 66 L 857.5 84 L 875 84 M 875 84 L 875 66 L 892.5 66 L 892.5 84 L 910 84 M 910 84 L 910 66 L 927.5 66 L 927.5 84 L 945 84" stroke="#cdd6f4" stroke-width="1.5" fill="none" />
+<text x="25" y="120" class="sig-name">cpu_valid</text>
+<path d="M 140 106 L 175 106 L 210 106 L 245 106 L 280 106 L 315 106 L 350 106 L 385 106 L 420 106 L 455 106 L 490 106 L 525 106 L 560 106 L 595 106 L 630 106 L 665 106 L 700 106 L 735 106 L 770 106 L 805 106 L 840 106 L 875 106 L 910 106 L 910 124 L 945 124" class="wire-hi" />
+<text x="25" y="160" class="sig-name">cpu_addr</text>
+<polygon points="142,155 146,146 904,146 908,155 904,164 146,164" class="bus-poly" /><text x="525.0" y="159" class="bus-text">0x1000</text>
+<line x1="910" y1="155" x2="945" y2="155" stroke="#45475a" stroke-width="1.5" />
+<text x="25" y="200" class="sig-name">FSM state</text>
+<polygon points="142,195 146,186 169,186 173,195 169,204 146,204" class="bus-poly" /><text x="157.5" y="199" class="bus-text">IDLE</text>
+<polygon points="177,195 181,186 869,186 873,195 869,204 181,204" class="bus-poly" /><text x="525.0" y="199" class="bus-text">REFILL</text>
+<polygon points="877,195 881,186 904,186 908,195 904,204 881,204" class="bus-poly" /><text x="892.5" y="199" class="bus-text">RESPOND</text>
+<polygon points="912,195 916,186 939,186 943,195 939,204 916,204" class="bus-poly" /><text x="927.5" y="199" class="bus-text">IDLE</text>
+<text x="25" y="240" class="sig-name">stat_miss</text>
+<path d="M 140 226 L 175 226 L 175 244 L 210 244 L 245 244 L 280 244 L 315 244 L 350 244 L 385 244 L 420 244 L 455 244 L 490 244 L 525 244 L 560 244 L 595 244 L 630 244 L 665 244 L 700 244 L 735 244 L 770 244 L 805 244 L 840 244 L 875 244 L 910 244 L 945 244" class="wire-pulse" />
+<text x="25" y="280" class="sig-name">mem_req</text>
+<path d="M 140 284 L 175 284 L 175 266 L 210 266 L 245 266 L 280 266 L 315 266 L 350 266 L 385 266 L 420 266 L 455 266 L 490 266 L 525 266 L 560 266 L 595 266 L 630 266 L 665 266 L 700 266 L 735 266 L 770 266 L 805 266 L 840 266 L 875 266 L 875 284 L 910 284 L 945 284" class="wire-hi" />
+<text x="25" y="320" class="sig-name">mem_addr</text>
+<line x1="140" y1="315" x2="175" y2="315" stroke="#45475a" stroke-width="1.5" />
+<polygon points="177,315 181,306 344,306 348,315 344,324 181,324" class="bus-poly" /><text x="262.5" y="319" class="bus-text">0x1000</text>
+<polygon points="352,315 356,306 519,306 523,315 519,324 356,324" class="bus-poly" /><text x="437.5" y="319" class="bus-text">0x1004</text>
+<polygon points="527,315 531,306 694,306 698,315 694,324 531,324" class="bus-poly" /><text x="612.5" y="319" class="bus-text">0x1008</text>
+<polygon points="702,315 706,306 869,306 873,315 869,324 706,324" class="bus-poly" /><text x="787.5" y="319" class="bus-text">0x100C</text>
+<line x1="875" y1="315" x2="945" y2="315" stroke="#45475a" stroke-width="1.5" />
+<text x="25" y="360" class="sig-name">mem_ack</text>
+<path d="M 140 364 L 175 364 L 210 364 L 245 364 L 280 364 L 315 364 L 315 346 L 350 346 L 350 364 L 385 364 L 420 364 L 455 364 L 490 364 L 490 346 L 525 346 L 525 364 L 560 364 L 595 364 L 630 364 L 665 364 L 665 346 L 700 346 L 700 364 L 735 364 L 770 364 L 805 364 L 840 364 L 840 346 L 875 346 L 875 364 L 910 364 L 945 364" class="wire-pulse" />
+<text x="25" y="400" class="sig-name">cpu_ready</text>
+<path d="M 140 404 L 175 404 L 210 404 L 245 404 L 280 404 L 315 404 L 350 404 L 385 404 L 420 404 L 455 404 L 490 404 L 525 404 L 560 404 L 595 404 L 630 404 L 665 404 L 700 404 L 735 404 L 770 404 L 805 404 L 840 404 L 875 404 L 875 386 L 910 386 L 910 404 L 945 404" class="wire-pulse" />
+<text x="25" y="440" class="sig-name">cpu_rdata</text>
+<line x1="140" y1="435" x2="875" y2="435" stroke="#45475a" stroke-width="1.5" />
+<polygon points="877,435 881,426 904,426 908,435 904,444 881,444" class="bus-poly" /><text x="892.5" y="439" class="bus-text">D[0x1000]</text>
+<line x1="910" y1="435" x2="945" y2="435" stroke="#45475a" stroke-width="1.5" />
+</svg>
