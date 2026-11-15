@@ -1,0 +1,188 @@
+
+12. Printing statistics.
+
+=== $paramod$697db3d43a87a9b50d14fb4a67be87aa57b80de0\addr_decoder ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        5 wires
+       67 wire bits
+        5 public wires
+       67 public wire bits
+        5 ports
+       67 port bits
+
+=== $paramod$3c55f99cfb8ded4205ced201fc2e30445f1b646f\tag_ram ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     1240 wires
+     1962 wire bits
+       38 public wires
+      760 public wire bits
+        6 ports
+       56 port bits
+     1928 cells
+       91   $_ANDNOT_
+      181   $_AND_
+      704   $_DFFE_PP_
+      440   $_MUX_
+      242   $_NAND_
+      133   $_NOR_
+        5   $_NOT_
+      110   $_ORNOT_
+       22   $_OR_
+
+=== $paramod\valid_ram\INDEX_W=s32'00000000000000000000000000000101 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      240 wires
+      279 wire bits
+        8 public wires
+       47 public wire bits
+        7 ports
+       15 port bits
+      265 cells
+       22   $_ANDNOT_
+       30   $_AND_
+       21   $_MUX_
+      101   $_NAND_
+        3   $_NOR_
+        1   $_NOT_
+       27   $_ORNOT_
+       25   $_OR_
+       32   $_SDFFE_PN0P_
+        3   $_XNOR_
+
+=== $paramod$b9001328932df8f5cfecc0231ada6027d356e8e0\data_ram ===
+
+        +----------Local Count, excluding submodules.
+        | 
+    13864 wires
+    22830 wire bits
+       39 public wires
+     8495 public wire bits
+        7 ports
+      303 port bits
+    22535 cells
+      489   $_ANDNOT_
+     2839   $_AND_
+     8192   $_DFFE_PP_
+     5120   $_MUX_
+     2816   $_NAND_
+      772   $_NOR_
+        6   $_NOT_
+     1280   $_ORNOT_
+     1021   $_OR_
+
+=== $paramod\tag_comparator\TAG_W=s32'00000000000000000000000000010110 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       83 wires
+      125 wire bits
+        4 public wires
+       46 public wire bits
+        4 ports
+       46 port bits
+       80 cells
+       40   $_AND_
+       36   $_ORNOT_
+        4   $_XNOR_
+
+=== $paramod$6a96ba208fe7e24189c7857211ef0f5b0fc37ccd\cache_controller ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       42 wires
+       56 wire bits
+       21 public wires
+       31 public wire bits
+       18 ports
+       24 port bits
+       37 cells
+        5   $_ANDNOT_
+        8   $_AND_
+        3   $_DFF_P_
+        3   $_MUX_
+        2   $_NAND_
+        2   $_NOR_
+        3   $_NOT_
+        2   $_ORNOT_
+        4   $_OR_
+        3   $_SDFFE_PP0P_
+        1   $_XNOR_
+        1   $_XOR_
+
+=== cache_top ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      289 wires
+     1003 wire bits
+       33 public wires
+      623 public wire bits
+       18 ports
+      266 port bits
+      447 cells
+       58   $_AND_
+      259   $_MUX_
+        2   $_NAND_
+        2   $_NOT_
+       64   $_SDFFE_PN0P_
+        2   $_XNOR_
+       60   $_XOR_
+        6 submodules
+        1   $paramod$3c55f99cfb8ded4205ced201fc2e30445f1b646f\tag_ram
+        1   $paramod$697db3d43a87a9b50d14fb4a67be87aa57b80de0\addr_decoder
+        1   $paramod$6a96ba208fe7e24189c7857211ef0f5b0fc37ccd\cache_controller
+        1   $paramod$b9001328932df8f5cfecc0231ada6027d356e8e0\data_ram
+        1   $paramod\tag_comparator\TAG_W=s32'00000000000000000000000000010110
+        1   $paramod\valid_ram\INDEX_W=s32'00000000000000000000000000000101
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+    25292 cache_top
+     1928 $paramod$3c55f99cfb8ded4205ced201fc2e30445f1b646f\tag_ram
+       37 $paramod$6a96ba208fe7e24189c7857211ef0f5b0fc37ccd\cache_controller
+    22535 $paramod$b9001328932df8f5cfecc0231ada6027d356e8e0\data_ram
+       80 $paramod\tag_comparator\TAG_W=s32'00000000000000000000000000010110
+      265 $paramod\valid_ram\INDEX_W=s32'00000000000000000000000000000101
+
+        +----------Count including submodules.
+        | 
+    15763 wires
+    26322 wire bits
+      148 public wires
+    10069 public wire bits
+       65 ports
+      777 port bits
+        - memories
+        - memory bits
+        - processes
+    25292 cells
+      607   $_ANDNOT_
+     3156   $_AND_
+     8896   $_DFFE_PP_
+        3   $_DFF_P_
+     5843   $_MUX_
+     3163   $_NAND_
+      910   $_NOR_
+       17   $_NOT_
+     1455   $_ORNOT_
+     1072   $_OR_
+       96   $_SDFFE_PN0P_
+        3   $_SDFFE_PP0P_
+       10   $_XNOR_
+       61   $_XOR_
+        6 submodules
+        1   $paramod$3c55f99cfb8ded4205ced201fc2e30445f1b646f\tag_ram
+        1   $paramod$697db3d43a87a9b50d14fb4a67be87aa57b80de0\addr_decoder
+        1   $paramod$6a96ba208fe7e24189c7857211ef0f5b0fc37ccd\cache_controller
+        1   $paramod$b9001328932df8f5cfecc0231ada6027d356e8e0\data_ram
+        1   $paramod\tag_comparator\TAG_W=s32'00000000000000000000000000010110
+        1   $paramod\valid_ram\INDEX_W=s32'00000000000000000000000000000101
+

@@ -1,0 +1,21 @@
+
+12. Printing statistics.
+
+=== cache_top ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     4445 wires
+    24084 wire bits
+     4445 public wires
+    24084 public wire bits
+       18 ports
+      266 port bits
+    18904 cells
+        6   $scopeinfo
+       65   SB_CARRY
+        4   SB_DFF
+     9600   SB_DFFE
+      130   SB_DFFESR
+     9099   SB_LUT4
+

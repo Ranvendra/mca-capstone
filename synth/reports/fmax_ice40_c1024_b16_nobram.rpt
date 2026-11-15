@@ -1,0 +1,8 @@
+# fmax_ice40_c1024_b16_nobram : nextpnr-ice40 --hx8k --package ct256 --seed 1 (top = fmax_wrap)
+# "nextpnr-ice40" -- Next Generation Place and Route (Version )
+Info: 	         ICESTORM_LC:   18791/   7680   244%
+Info: 	        ICESTORM_RAM:       0/     32     0%
+Info: 	               SB_IO:       3/    206     1%
+Info: 	               SB_GB:       6/      8    75%
+ERROR: Unable to place cell 'u_cache.u_data_ram.mem[14]_SB_DFFE_Q_28_DFFLC', no BELs remaining to implement cell type 'ICESTORM_LC'
+# critical path (after routing):

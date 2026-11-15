@@ -1,0 +1,30 @@
+# =============================================================================
+# synth/synth.ys  (M3)  Yosys synthesis of the cache, base config, generic cells.
+#
+#   Top    : cache_top  (1 KB cache, 16 B blocks: the defaults in rtl/cache_top.v)
+#   Not in : rtl/main_memory.v. It is a behavioural testbench model, not hardware.
+#
+# Run from the repo root:
+#   yosys -l synth/build/synth_base.log -s synth/synth.ys
+#
+# Other sizes / FPGA targets use the same steps with parameter overrides:
+#   sh synth/run_synth.sh <CACHE_BYTES> <BLOCK_BYTES> <generic|xilinx|ice40>
+#   make -C synth sweep        (all configs of docs/synthesis.md)
+# =============================================================================
+
+# -sv: SystemVerilog-2012 front end ($clog2 in port widths), same as iverilog -g2012
+read_verilog -sv rtl/addr_decoder.v rtl/tag_ram.v rtl/valid_ram.v rtl/data_ram.v
+read_verilog -sv rtl/tag_comparator.v rtl/cache_controller.v rtl/cache_top.v
+
+# elaborate from the top, stop on any missing module / port mismatch
+hierarchy -check -top cache_top
+
+# generic synthesis: RTL -> technology-independent gates ($_AND_, $_MUX_, $_DFF_ ...)
+# No -flatten, so `stat` can show which module the area comes from.
+synth -top cache_top
+
+# sanity checks on the result (combinational loops, multiple drivers, ...)
+check -assert
+
+# cell counts: per module and for the whole hierarchy
+stat -top cache_top
