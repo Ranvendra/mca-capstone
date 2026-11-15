@@ -18,7 +18,7 @@ BUILD_DIR   := build
 RTL_SRCS    := $(wildcard $(RTL_DIR)/*.v)
 TRACES      := $(wildcard $(TRACES_DIR)/*.trace)
 
-.PHONY: all sim trace test unit wave clean help traces analysis analysis-base
+.PHONY: all sim trace test unit wave clean help traces analysis analysis-base synth
 
 all: test
 
@@ -32,6 +32,7 @@ help:
 	@echo "  make traces           Regenerate deterministic M5 workload traces"
 	@echo "  make analysis         Run M5 reference-model hit/miss and AMAT analysis"
 	@echo "  make analysis-base    Run M5 analysis for the base 1 KiB / 16 B configuration"
+	@echo "  make synth            Run the M3 synthesis sweep"
 	@echo "  make clean            Remove build artifacts and simulation outputs"
 
 $(BUILD_DIR):
@@ -103,7 +104,7 @@ wave: sim
 # -----------------------------------------------------------------------------
 clean:
 	rm -rf $(BUILD_DIR) *.vcd /tmp/tb_* /tmp/m2_tests /tmp/m3_tests
-	rm -f $(ANALYSIS_DIR)/results/*_reference.csv $(ANALYSIS_DIR)/results/summary.csv $(ANALYSIS_DIR)/results/summary.md $(ANALYSIS_DIR)/results/parameter_sweep.csv $(ANALYSIS_DIR)/results/*.png
+	rm -f $(ANALYSIS_DIR)/results/*_reference.csv $(ANALYSIS_DIR)/results/summary.csv $(ANALYSIS_DIR)/results/summary.md $(ANALYSIS_DIR)/results/parameter_sweep.csv $(ANALYSIS_DIR)/results/rtl_summary.csv $(ANALYSIS_DIR)/results/*.png
 
 # M5 deterministic trace generation and reference-model analysis.
 .PHONY: traces analysis analysis-base
@@ -116,3 +117,6 @@ analysis: traces
 
 analysis-base: traces
 	$(PYTHON) analysis/analyze.py --no-sweep --cache 1024 --block 16 --latency 4
+
+synth:
+	$(MAKE) -C synth sweep
