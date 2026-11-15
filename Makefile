@@ -60,15 +60,15 @@ ifndef T
 	$(error Please specify trace name using T=<name>, e.g., make trace T=seq)
 endif
 	@case "$(T)" in ""|*[!A-Za-z0-9_-]*) echo "ERROR: T must contain only letters, digits, underscore or hyphen"; exit 2;; esac
-	@if [ ! -f ""$(TRACES_DIR)/$(T).trace"" ]; then echo "ERROR: missing $(TRACES_DIR)/$(T).trace"; exit 1; fi
+	@if [ ! -f "$(TRACES_DIR)/$(T).trace" ]; then echo "ERROR: missing $(TRACES_DIR)/$(T).trace"; exit 1; fi
 	@echo "=== Compiling Trace Testbench for $(T) ==="
 	$(IVERILOG) -g2012 -Wall -Wno-timescale -o $(BUILD_DIR)/tb_cache_trace $(RTL_SRCS) $(TB_DIR)/tb_cache_trace.v
 	@echo "=== Running RTL Simulation on $(T).trace ==="
-	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE=$(TRACES_DIR)/$(T).trace +OUT="$(RESULTS_DIR)/$(T)_sim.csv"
+	$(VVP) $(BUILD_DIR)/tb_cache_trace +TRACE="$(TRACES_DIR)/$(T).trace" +OUT="$(RESULTS_DIR)/$(T)_sim.csv"
 	@echo "=== Running Python Golden Model on $(T).trace ==="
-	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py $(TRACES_DIR)/$(T).trace --out "$(RESULTS_DIR)/$(T)_golden.csv"
+	$(PYTHON) $(ANALYSIS_DIR)/golden_model.py "$(TRACES_DIR)/$(T).trace" --out "$(RESULTS_DIR)/$(T)_golden.csv"
 	@echo "=== Verifying RTL Output vs Golden Model ==="
-	$(PYTHON) $(ANALYSIS_DIR)/compare.py $(RESULTS_DIR)/$(T)_sim.csv $(RESULTS_DIR)/$(T)_golden.csv --check-latency
+	$(PYTHON) $(ANALYSIS_DIR)/compare.py "$(RESULTS_DIR)/$(T)_sim.csv" "$(RESULTS_DIR)/$(T)_golden.csv" --check-latency
 
 # Comprehensive verification suite (M4); committed M5 traces are included automatically.
 test: unit sim
@@ -98,7 +98,7 @@ analysis-base: traces
 
 # Run M4 RTL simulation/comparison first, then independently validate and summarize its CSV.
 analysis-rtl: trace
-	$(PYTHON) analysis/analyze.py --rtl-csv $(RESULTS_DIR)/$(T)_sim.csv --trace $(TRACES_DIR)/$(T).trace --cache 1024 --block 16 --latency 4
+	$(PYTHON) analysis/analyze.py --rtl-csv "$(RESULTS_DIR)/$(T)_sim.csv" --trace "$(TRACES_DIR)/$(T).trace" --cache 1024 --block 16 --latency 4
 
 # M3 synthesis workflow; preserve synth/Makefile ownership and implementation.
 synth:
