@@ -46,8 +46,8 @@ def validate_config(cache_bytes: int, block_bytes: int, mem_latency: int) -> Non
         raise ValueError("cache size must be a positive power of two")
     if block_bytes < 8 or block_bytes & (block_bytes - 1) or block_bytes % WORD_BYTES:
         raise ValueError("block size must be a power of two, at least 8 bytes, and word-aligned")
-    if cache_bytes < block_bytes or cache_bytes % block_bytes:
-        raise ValueError("cache size must be a multiple of block size")
+    if cache_bytes < 2 * block_bytes or cache_bytes % block_bytes:
+        raise ValueError("cache size must be a multiple of block size and contain at least two blocks")
     if mem_latency < 1:
         raise ValueError("MEM_LATENCY must be >= 1 (RTL clamps values below one)")
 
@@ -294,11 +294,47 @@ def main() -> None:
                                       "block_bytes": block_size, "mem_latency": args.latency, **summary})
             atomic_write(stage / "parameter_sweep.csv", csv_text(sweep))
             make_plots(sweep, stage)
-        for staged_file in stage.iterdir():
-            destination = args.out_dir / staged_file.name
-            if destination.is_symlink():
-                raise ValueError(f"refusing to overwrite symlink: {destination}")
-            os.replace(staged_file, destination)
+        # Serialize publishers and preflight every destination before changing any.
+        import fcntl
+        lock_path = args.out_dir / ".m5-analysis.lock"
+        with lock_path.open("w", encoding="utf-8") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            staged_names = {p.name for p in stage.iterdir()}
+            stale_names = {p.name for p in args.out_dir.glob("*_reference.csv")
+                           if p.name not in staged_names}
+            if args.no_sweep:
+                stale_names |= {"parameter_sweep.csv", "hit_ratio_by_trace.png",
+                                "hit_ratio_vs_block_size.png", "amat_vs_block_size.png",
+                                "hit_ratio_vs_cache_size.png"}
+            destinations = [args.out_dir / name for name in staged_names | stale_names]
+            for destination in destinations:
+                if destination.is_symlink():
+                    raise ValueError(f"refusing to modify symlink: {destination}")
+            backups = {}
+            changed = []
+            try:
+                for destination in destinations:
+                    if destination.exists() and destination.is_file():
+                        fd, backup_name = tempfile.mkstemp(prefix=".m5-backup-", dir=args.out_dir)
+                        os.close(fd)
+                        os.replace(destination, backup_name)
+                        backups[destination] = Path(backup_name)
+                for staged_file in stage.iterdir():
+                    destination = args.out_dir / staged_file.name
+                    os.replace(staged_file, destination)
+                    changed.append(destination)
+            except Exception:
+                for destination in changed:
+                    if destination.exists():
+                        destination.unlink()
+                for destination, backup in backups.items():
+                    if backup.exists():
+                        os.replace(backup, destination)
+                raise
+            else:
+                for backup in backups.values():
+                    backup.unlink(missing_ok=True)
+            fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
     print(f"Analysed {len(trace_files)} traces; results: {args.out_dir}")
 
 if __name__ == "__main__":
