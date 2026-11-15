@@ -14,7 +14,6 @@ RESULTS_DIR  := $(ANALYSIS_DIR)/results
 BUILD_DIR    := build
 RTL_SRCS     := $(wildcard $(RTL_DIR)/*.v)
 TRACES       := $(wildcard $(TRACES_DIR)/*.trace)
-export T
 
 .PHONY: all sim trace test unit wave clean help traces analysis analysis-base analysis-rtl synth
 all: test
